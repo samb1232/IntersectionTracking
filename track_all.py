@@ -79,10 +79,9 @@ class ObjectDetection:
             cur_time = time()
             time_diff = cur_time - start_time
             if time_diff > 2.0:
-                fps = fps_counter/np.round(time_diff)
+                fps = fps_counter / np.round(time_diff)
                 start_time = time()
                 fps_counter = 0
-
 
             ret, frame = cap.read()
             assert ret
@@ -101,12 +100,12 @@ class ObjectDetection:
 
             frame = self.draw_bounding_boxes_with_id(frame, boxes_track, boxes_ids)
 
-
             cv2.putText(frame, f'FPS: {int(fps)}', (20, 70), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
 
             cv2.imshow('YOLOv8 Detection', frame)
 
-            if cv2.waitKey(1) & 0xFF == ord("q"):
+            key = cv2.waitKey(1)
+            if key == 27:
                 break
 
         cap.release()
