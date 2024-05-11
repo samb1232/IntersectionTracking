@@ -31,24 +31,7 @@ while ret:
         # track objects
         result = model.track(frame, persist=True)[0]
 
-        res_data = result.boxes.data.numpy()
 
-        clss_list = []
-        confs_list = []
-        ids_list = []
-        coords_list = []
-
-        for box in res_data:
-            if box[6] in classes_to_track:
-                clss_list.append(box[6])
-                confs_list.append(box[5])
-                ids_list.append(box[4])
-                coords_list.append(box[0:3])
-
-
-        # plot results
-        # cv2.rectangle
-        # cv2.putText
         frame_ = result.plot()
 
         # visualize

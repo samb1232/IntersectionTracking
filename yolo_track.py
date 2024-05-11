@@ -80,7 +80,6 @@ class ObjectDetection:
             confs_list = []
             boxes_ids = []
             boxes_coordinates = []
-            print(len(classes_list), len(confs_list), len(boxes_ids), len(boxes_coordinates))
             for box in res_data:
                 if box[6] in self.classes_to_track:
                     classes_list.append(box[6].astype(int))
