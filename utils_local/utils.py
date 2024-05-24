@@ -1,5 +1,7 @@
 import logging
 import time
+from collections import deque
+
 import numpy as np
 from shapely.geometry import Point, Polygon
 
@@ -22,15 +24,15 @@ def profile_time(func):
     return exec_and_print_status
 
 
-class FPS_Counter:
-    def __init__(self, calc_time_perion_N_frames: int) -> None:
+class FPSCounter:
+    def __init__(self, calc_time_period_n_frames: int) -> None:
         """Счетчик FPS по ограниченным участкам видео (скользящему окну).
 
         Args:
-            calc_time_perion_N_frames (int): количество фреймов окна подсчета статистики.
+            calc_time_period_n_frames (int): количество фреймов окна подсчета статистики.
         """
         self.time_buffer = []
-        self.calc_time_perion_N_frames = calc_time_perion_N_frames
+        self.calc_time_perion_N_frames = calc_time_period_n_frames
 
     def calc_FPS(self) -> float:
         """Производит рассчет FPS по нескольким кадрам видео.
@@ -71,3 +73,43 @@ def intersects_central_point(tracked_xyxy, polygons):
         if polygon.contains(center_point):
             return int(key)
     return None
+
+
+class VehiclesCounter:
+    """
+    Счетчик уникальных id. Хранит только последние уникальные id в очереди. При переполнении забывает старые id.
+
+    """
+
+    def __init__(self, capacity: int = 150):
+        """
+        Args:
+            capacity: Длина очереди для запоминания последних id.
+        """
+        self.capacity = capacity
+        self.queue = deque(maxlen=capacity)
+        self.id_set = set()
+        self.total_count = 0
+
+    def add(self, id: int):
+        if id in self.id_set:
+            return
+
+        if len(self.queue) >= self.capacity:
+            oldest_id = self.queue.popleft()
+            self.id_set.remove(oldest_id)
+
+        self.queue.append(id)
+        self.id_set.add(id)
+
+        self.total_count += 1
+
+    def get_len(self):
+        return self.total_count
+
+    def reset_len(self):
+        self.total_count = 0
+
+    def clear(self):
+        self.reset_len()
+        self.queue.clear()

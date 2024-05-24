@@ -1,3 +1,4 @@
+import json
 import time
 import logging
 import psycopg2
@@ -14,7 +15,7 @@ class SendInfoDBNode:
 
     def __init__(self, config: dict) -> None:
         config_db = config["send_info_db_node"]
-        self.how_often_add_info = config_db["how_often_add_info"]
+        self.update_period = config_db["update_period"] * 6
         self.table_name = config_db["table_name"]
         self.last_db_update = time.time()
 
@@ -31,7 +32,7 @@ class SendInfoDBNode:
         self.buffer_analytics_sec = (
             config["general"]["buffer_analytics"] * 60 +
             config["general"]["min_time_life_track"]
-        )  # столько по времени буфер набирается и информацию о статистеке выводить рано
+        )  # столько по времени буфер набирается и информацию о статистике выводить рано
 
         # Подключение к базе данных
         try:
@@ -57,15 +58,12 @@ class SendInfoDBNode:
 
         # SQL-запрос для создания таблицы
         create_table_query = f"""
-        CREATE TABLE {self.table_name} (
+        CREATE TABLE IF NOT EXISTS {self.table_name} (
             id SERIAL PRIMARY KEY,
             timestamp INTEGER,
             timestamp_date TIMESTAMP,
-            cars INTEGER,
-            road_1 FLOAT,
-            road_2 FLOAT,
-            road_3 FLOAT,
-            road_4 FLOAT
+            cars_on_screen INTEGER,
+            vehicles_data JSONB
         );
         """
 
@@ -75,13 +73,13 @@ class SendInfoDBNode:
             self.connection.commit()
             logger.info(
                 f"Table {self.table_name} created successfully"
-            ) 
+            )
         except (Exception, psycopg2.Error) as error:
             logger.error(
                 f"Error while creating table: {error}"
-            )   
+            )
 
-    @profile_time 
+    @profile_time
     def process(self, frame_element: FrameElement) -> FrameElement:
         # Выйти из обработки если это пришел VideoEndBreakElement а не FrameElement
         if isinstance(frame_element, VideoEndBreakElement):
@@ -97,7 +95,7 @@ class SendInfoDBNode:
 
         # Проверка, нужно ли отправлять информацию в базу данных
         current_time = time.time()
-        if current_time - self.last_db_update >= self.how_often_add_info:
+        if current_time - self.last_db_update >= self.update_period:
             self._insert_in_db(info_dictionary, timestamp, timestamp_date)
             frame_element.send_info_of_frame_to_db = True
             self.last_db_update = (
@@ -110,8 +108,8 @@ class SendInfoDBNode:
         # Формирование и выполнение SQL-запроса для вставки данных в бд
         insert_query = (
             f"INSERT INTO {self.table_name} "
-            "(timestamp, timestamp_date, cars, road_1, road_2, road_3, road_4) "
-            "VALUES (%s, to_timestamp(%s), %s, %s, %s, %s, %s);"
+            "(timestamp, timestamp_date, cars_on_screen, vehicles_data) "
+            "VALUES (%s, to_timestamp(%s), %s, %s);"
         )
         try:
             self.cursor.execute(
@@ -120,26 +118,7 @@ class SendInfoDBNode:
                     timestamp,
                     timestamp_date,
                     info_dictionary["cars_amount"],
-                    (
-                        info_dictionary["roads_activity"][1]
-                        if timestamp >= self.buffer_analytics_sec
-                        else None
-                    ),
-                    (
-                        info_dictionary["roads_activity"][2]
-                        if timestamp >= self.buffer_analytics_sec
-                        else None
-                    ),
-                    (
-                        info_dictionary["roads_activity"][3]
-                        if timestamp >= self.buffer_analytics_sec
-                        else None
-                    ),
-                    (
-                        info_dictionary["roads_activity"][4]
-                        if timestamp >= self.buffer_analytics_sec
-                        else None
-                    ),
+                    info_dictionary["vehicles_data"]
                 ),
             )
             self.connection.commit()
@@ -149,4 +128,6 @@ class SendInfoDBNode:
         except (Exception, psycopg2.Error) as error:
             logger.error(
                 f"Error while inserting data into PostgreSQL: {error}"
-            )   
+            )
+            self.connection.rollback()
+

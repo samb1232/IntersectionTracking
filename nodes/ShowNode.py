@@ -5,7 +5,7 @@ import numpy as np
 
 from elements.FrameElement import FrameElement
 from elements.VideoEndBreakElement import VideoEndBreakElement
-from utils_local.utils import profile_time, FPS_Counter
+from utils_local.utils import profile_time, FPSCounter
 
 
 class ShowNode:
@@ -21,7 +21,7 @@ class ShowNode:
         config_show_node = config["show_node"]
         self.scale = config_show_node["scale"]
         self.fps_counter_N_frames_stat = config_show_node["fps_counter_N_frames_stat"]
-        self.default_fps_counter = FPS_Counter(self.fps_counter_N_frames_stat)
+        self.default_fps_counter = FPSCounter(self.fps_counter_N_frames_stat)
         self.draw_fps_info = config_show_node["draw_fps_info"]
         self.show_roi = config_show_node["show_roi"]
         self.overlay_transparent_mask = config_show_node["overlay_transparent_mask"]
@@ -202,54 +202,55 @@ class ShowNode:
                 thickness=self.thickness,
                 color=(255, 255, 255),
             )
-            # Увеличиваем y на высоту строки текста
-            y += cv2.getTextSize(text_cars, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
-            # Текст для заголовка
-            text_info = "Traffic congestion:"
-            # Выводим заголовок
-            cv2.putText(
-                img=black_image,
-                text=text_info,
-                org=(20, y),
-                fontFace=self.fontFace,
-                fontScale=self.fontScale * 1.5,
-                thickness=self.thickness,
-                color=(255, 255, 255),
-            )
-            # Увеличиваем y на высоту строки текста
-            y += cv2.getTextSize(text_info, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
-
-            # Проверим, что буфер уже наполнился и можно выводить статистику:
-            if frame_element.timestamp >= self.buffer_analytics_sec:
-                # Выводим информацию по дорогам
-                for key, value in data_info['roads_activity'].items():
-                    text_road = f"  road {key}: {value:.1f} cars/min"
-                    cv2.putText(
-                        img=black_image,
-                        text=text_road,
-                        org=(20, y),
-                        fontFace=self.fontFace,
-                        fontScale=self.fontScale * 1.5,
-                        thickness=self.thickness,
-                        color=(255, 255, 255),
-                    )
-                    # Увеличиваем y на высоту строки текста
-                    y += (
-                            cv2.getTextSize(
-                                text_road, self.fontFace, self.fontScale * 1.5, self.thickness
-                            )[0][1] + 25
-                    )
-            else:
-                text_to_show = f"   wait {round(self.buffer_analytics_sec - frame_element.timestamp)} sec"
-                cv2.putText(
-                    img=black_image,
-                    text=text_to_show,
-                    org=(20, y),
-                    fontFace=self.fontFace,
-                    fontScale=self.fontScale * 1.5,
-                    thickness=self.thickness,
-                    color=(255, 255, 255),
-                )
+            # # Увеличиваем y на высоту строки текста
+            # y += cv2.getTextSize(text_cars, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
+            # # Текст для заголовка
+            # text_info = "Traffic congestion:"
+            # # Выводим заголовок
+            # cv2.putText(
+            #     img=black_image,
+            #     text=text_info,
+            #     org=(20, y),
+            #     fontFace=self.fontFace,
+            #     fontScale=self.fontScale * 1.5,
+            #     thickness=self.thickness,
+            #     color=(255, 255, 255),
+            # )
+            # # Увеличиваем y на высоту строки текста
+            # y += cv2.getTextSize(text_info, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
+            #
+            # # Проверим, что буфер уже наполнился и можно выводить статистику:
+            # if frame_element.timestamp >= self.buffer_analytics_sec:
+            #     # Выводим информацию по дорогам
+            #     pass
+            #     # for key, value in data_info['roads_activity'].items():
+            #     #     text_road = f"  road {key}: {value:.1f} cars/min"
+            #     #     cv2.putText(
+            #     #         img=black_image,
+            #     #         text=text_road,
+            #     #         org=(20, y),
+            #     #         fontFace=self.fontFace,
+            #     #         fontScale=self.fontScale * 1.5,
+            #     #         thickness=self.thickness,
+            #     #         color=(255, 255, 255),
+            #     #     )
+            #     #     # Увеличиваем y на высоту строки текста
+            #     #     y += (
+            #     #             cv2.getTextSize(
+            #     #                 text_road, self.fontFace, self.fontScale * 1.5, self.thickness
+            #     #             )[0][1] + 25
+            #     #     )
+            # else:
+            #     text_to_show = f"   wait {round(self.buffer_analytics_sec - frame_element.timestamp)} sec"
+            #     cv2.putText(
+            #         img=black_image,
+            #         text=text_to_show,
+            #         org=(20, y),
+            #         fontFace=self.fontFace,
+            #         fontScale=self.fontScale * 1.5,
+            #         thickness=self.thickness,
+            #         color=(255, 255, 255),
+            #     )
             frame_result = np.hstack((frame_result, black_image))
 
         frame_element.frame_result = frame_result
