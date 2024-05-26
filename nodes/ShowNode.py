@@ -91,13 +91,13 @@ class ShowNode:
                         else:  # бокс черным цветом если еще нет информации о стартовой дороге
                             color = (0, 0, 0)
                     except KeyError:  # На случай если машина еще в кадре а трек уже удален
-                        color = (0, 0, 0)
+                        color = (255, 255, 255)
 
                 cv2.rectangle(frame_result, (x1, y1), (x2, y2), color, self.thickness_lines)
                 # Добавление подписи с именем класса
                 cv2.putText(
                     frame_result,
-                    f"{id}",
+                    f"{class_name}: {id}",
                     (x1, y1 - 10),
                     fontFace=self.fontFace,
                     fontScale=self.fontScale,

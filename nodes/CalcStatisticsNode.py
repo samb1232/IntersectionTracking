@@ -1,7 +1,6 @@
 import json
 from collections import deque
 
-import numpy as np
 
 from elements.FrameElement import FrameElement
 from elements.VideoEndBreakElement import VideoEndBreakElement
@@ -20,8 +19,7 @@ class CalcStatisticsNode:
         self.min_time_life_track = config_general[
             "min_time_life_track"
         ]  # минимальное время жизни трека в сек
-        self.count_cars_buffer_frames = config_general["count_cars_buffer_frames"]
-        self.cars_buffer = deque(maxlen=self.count_cars_buffer_frames)  # создали буфер значений
+
         self.road_directions_data: dict = {}
 
         # data format: road_from: {road_to: {"cars": 0, "busses": 0, "trucks": 0}}
@@ -43,9 +41,8 @@ class CalcStatisticsNode:
         ), f"CalcStatisticsNode | Неправильный формат входного элемента {type(frame_element)}"
 
         buffer_tracks = frame_element.buffer_tracks
-        self.cars_buffer.append(len(frame_element.id_list))
 
-        info_dictionary = {"cars_amount": round(np.mean(self.cars_buffer))}
+        info_dictionary = {"cars_amount": len(frame_element.id_list)}
 
         # Посчитаем число машин которые давно живут и имеют значения дороги приезда
         for _, track_element in buffer_tracks.items():
