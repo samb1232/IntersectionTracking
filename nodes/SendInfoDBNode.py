@@ -63,7 +63,8 @@ class SendInfoDBNode:
             timestamp INTEGER,
             timestamp_date TIMESTAMP,
             cars_on_screen INTEGER,
-            vehicles_data JSONB
+            vehicles_data JSONB,
+            people_data JSONB
         );
         """
 
@@ -108,8 +109,8 @@ class SendInfoDBNode:
         # Формирование и выполнение SQL-запроса для вставки данных в бд
         insert_query = (
             f"INSERT INTO {self.table_name} "
-            "(timestamp, timestamp_date, cars_on_screen, vehicles_data) "
-            "VALUES (%s, to_timestamp(%s), %s, %s);"
+            "(timestamp, timestamp_date, cars_on_screen, vehicles_data, people_data) "
+            "VALUES (%s, to_timestamp(%s), %s, %s, %s);"
         )
         try:
             self.cursor.execute(
@@ -117,8 +118,9 @@ class SendInfoDBNode:
                 (
                     timestamp,
                     timestamp_date,
-                    info_dictionary["cars_amount"],
-                    info_dictionary["vehicles_data"]
+                    info_dictionary["cars_on_screen"],
+                    info_dictionary["vehicles_data"],
+                    info_dictionary["people_data"]
                 ),
             )
             self.connection.commit()

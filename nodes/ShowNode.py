@@ -12,8 +12,11 @@ class ShowNode:
     """Модуль отвечающий, за визуализацию результатов"""
 
     def __init__(self, config) -> None:
-        data_colors = config["general"]["colors_of_roads"]
-        self.colors_roads = {key: tuple(value) for key, value in data_colors.items()}
+        data_colors_cars = config["general"]["colors_of_roads_cars"]
+        self.colors_roads_cars = {key: tuple(value) for key, value in data_colors_cars.items()}
+        data_colors_people = config["general"]["colors_of_roads_people"]
+        self.colors_roads_people = {key: tuple(value) for key, value in data_colors_people.items()}
+
         self.buffer_analytics_sec = (
                 config["general"]["buffer_analytics"] * 60 + config["general"]["min_time_life_track"]
         )  # столько по времени буфер набирается и информацию о статистеке выводить рано
@@ -23,7 +26,8 @@ class ShowNode:
         self.fps_counter_N_frames_stat = config_show_node["fps_counter_N_frames_stat"]
         self.default_fps_counter = FPSCounter(self.fps_counter_N_frames_stat)
         self.draw_fps_info = config_show_node["draw_fps_info"]
-        self.show_roi = config_show_node["show_roi"]
+        self.show_roi_cars = config_show_node["show_roi_cars"]
+        self.show_roi_people = config_show_node["show_roi_cars"]
         self.overlay_transparent_mask = config_show_node["overlay_transparent_mask"]
         self.imshow = config_show_node["imshow"]
         self.show_only_yolo_detections = config_show_node["show_only_yolo_detections"]
@@ -38,7 +42,7 @@ class ShowNode:
         self.thickness = 2
 
         # Параметры для полигонов и bboxes:
-        self.thickness_lines = 3
+        self.thickness_lines = 2
 
         # Параметры для экрана статистики:
         self.width_window = 700  # ширина экрана в пикселях
@@ -87,17 +91,20 @@ class ShowNode:
                     try:
                         start_road = frame_element.buffer_tracks[int(id)].start_road
                         if start_road is not None:
-                            color = self.colors_roads[int(start_road)]
+                            if frame_element.buffer_tracks[int(id)].cls == "person":
+                                color = self.colors_roads_people[int(start_road)]
+                            else:
+                                color = self.colors_roads_cars[int(start_road)]
                         else:  # бокс черным цветом если еще нет информации о стартовой дороге
                             color = (0, 0, 0)
-                    except KeyError:  # На случай если машина еще в кадре а трек уже удален
+                    except KeyError:  # На случай если машина еще в кадре, а трек уже удален
                         color = (255, 255, 255)
 
                 cv2.rectangle(frame_result, (x1, y1), (x2, y2), color, self.thickness_lines)
                 # Добавление подписи с именем класса
                 cv2.putText(
                     frame_result,
-                    f"{class_name}: {id}",
+                    f"{frame_element.buffer_tracks[int(id)].cls}: {id}",
                     (x1, y1 - 10),
                     fontFace=self.fontFace,
                     fontScale=self.fontScale,
@@ -105,12 +112,11 @@ class ShowNode:
                     color=(0, 0, 255),
                 )
 
-        # Построение полигонов дорог
-        if self.show_roi:
-            for road_id, points in frame_element.roads_info.items():
-                color = self.colors_roads[int(road_id)]
-                points = np.array(points, np.int32)
-                points = points.reshape((-1, 1, 2))
+        # Построение полигонов дорог для машин
+        if self.show_roi_cars:
+            for road_id, points in frame_element.cars_roads_info.items():
+                color = self.colors_roads_cars[int(road_id)]
+                points = np.array(points, np.int32).reshape((-1, 1, 2))
                 cv2.polylines(
                     frame_result,
                     [points],
@@ -151,6 +157,58 @@ class ShowNode:
                         cv2.putText(
                             frame_result,
                             str(road_id),
+                            (cx + 2 - label_width // 2, cy + 2 + label_height // 2),
+                            fontFace=self.fontFace,
+                            fontScale=self.fontScale * 1.3,
+                            thickness=self.thickness,
+                            color=(0, 0, 0),
+                        )
+
+        # Построение полигонов дорог для пешеходов
+        if self.show_roi_people:
+            for road_id, points in frame_element.people_roads_info.items():
+                color = self.colors_roads_people[int(road_id)]
+                points = np.array(points, np.int32).reshape((-1, 1, 2))
+                cv2.polylines(
+                    frame_result,
+                    [points],
+                    isClosed=True,
+                    color=color,
+                    thickness=self.thickness_lines,
+                )
+
+                if self.overlay_transparent_mask:
+                    frame_result = self._overlay_transparent_mask(
+                        frame_result, points, mask_color=color, alpha=0.3
+                    )
+
+                # Отображение номера дороги в залитой окружности
+                if self.show_number_of_road:
+                    moments = cv2.moments(points)  # Найти центр области
+                    if moments["m00"] != 0:
+                        cx = int(moments["m10"] / moments["m00"])
+                        cy = int(moments["m01"] / moments["m00"])
+
+                        (label_width, label_height), _ = cv2.getTextSize(
+                            f"{road_id}`",
+                            fontFace=self.fontFace,
+                            fontScale=self.fontScale * 1.3,
+                            thickness=self.thickness,
+                        )
+                        # Определение размеров круга
+                        circle_radius = max(label_width, label_height) // 2
+                        # Рисование круга
+                        cv2.circle(
+                            frame_result,
+                            (cx, cy),
+                            circle_radius + 6,  # Добавляем небольшой отступ для текста
+                            (200, 200, 200),
+                            -1
+                        )
+                        # Нанесение подписи road_id в центре области
+                        cv2.putText(
+                            frame_result,
+                            f"{road_id}`",
                             (cx + 2 - label_width // 2, cy + 2 + label_height // 2),
                             fontFace=self.fontFace,
                             fontScale=self.fontScale * 1.3,
@@ -202,55 +260,7 @@ class ShowNode:
                 thickness=self.thickness,
                 color=(255, 255, 255),
             )
-            # # Увеличиваем y на высоту строки текста
-            # y += cv2.getTextSize(text_cars, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
-            # # Текст для заголовка
-            # text_info = "Traffic congestion:"
-            # # Выводим заголовок
-            # cv2.putText(
-            #     img=black_image,
-            #     text=text_info,
-            #     org=(20, y),
-            #     fontFace=self.fontFace,
-            #     fontScale=self.fontScale * 1.5,
-            #     thickness=self.thickness,
-            #     color=(255, 255, 255),
-            # )
-            # # Увеличиваем y на высоту строки текста
-            # y += cv2.getTextSize(text_info, self.fontFace, self.fontScale * 1.5, self.thickness)[0][1] + 25
-            #
-            # # Проверим, что буфер уже наполнился и можно выводить статистику:
-            # if frame_element.timestamp >= self.buffer_analytics_sec:
-            #     # Выводим информацию по дорогам
-            #     pass
-            #     # for key, value in data_info['roads_activity'].items():
-            #     #     text_road = f"  road {key}: {value:.1f} cars/min"
-            #     #     cv2.putText(
-            #     #         img=black_image,
-            #     #         text=text_road,
-            #     #         org=(20, y),
-            #     #         fontFace=self.fontFace,
-            #     #         fontScale=self.fontScale * 1.5,
-            #     #         thickness=self.thickness,
-            #     #         color=(255, 255, 255),
-            #     #     )
-            #     #     # Увеличиваем y на высоту строки текста
-            #     #     y += (
-            #     #             cv2.getTextSize(
-            #     #                 text_road, self.fontFace, self.fontScale * 1.5, self.thickness
-            #     #             )[0][1] + 25
-            #     #     )
-            # else:
-            #     text_to_show = f"   wait {round(self.buffer_analytics_sec - frame_element.timestamp)} sec"
-            #     cv2.putText(
-            #         img=black_image,
-            #         text=text_to_show,
-            #         org=(20, y),
-            #         fontFace=self.fontFace,
-            #         fontScale=self.fontScale * 1.5,
-            #         thickness=self.thickness,
-            #         color=(255, 255, 255),
-            #     )
+
             frame_result = np.hstack((frame_result, black_image))
 
         frame_element.frame_result = frame_result

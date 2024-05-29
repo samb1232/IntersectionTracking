@@ -15,14 +15,14 @@ class TrackerInfoUpdateNode:
         config_general = config["general"]
 
         self.size_buffer_analytics = (
-            config_general["buffer_analytics"] * 60
+                config_general["buffer_analytics"] * 60
         )  # число секунд в буфере аналитики
         # добавим мин времени жизни чтобы при расчете статистики были именно
         # машины за последие buffer_analytics минут:
         self.size_buffer_analytics += config_general["min_time_life_track"]
         self.buffer_tracks = {}  # Буфер актуальных треков
 
-    @profile_time 
+    @profile_time
     def process(self, frame_element: FrameElement) -> FrameElement:
         # Выйти из обработки если это пришел VideoEndBreakElement а не FrameElement
         if isinstance(frame_element, VideoEndBreakElement):
@@ -43,14 +43,20 @@ class TrackerInfoUpdateNode:
                 )
             else:
                 # Обновление времени последнего обнаружения
-                self.buffer_tracks[id].update(frame_element.timestamp)
+                self.buffer_tracks[id].update(frame_element.timestamp, frame_element.tracked_cls[i])
 
             # Поиск первого пересечения с полигонами дорог
             if self.buffer_tracks[id].start_road is None:
-                self.buffer_tracks[id].start_road = intersects_central_point(
-                    tracked_xyxy=frame_element.tracked_xyxy[i],
-                    polygons=frame_element.roads_info,
-                )
+                if self.buffer_tracks[id].cls == "person":
+                    self.buffer_tracks[id].start_road = intersects_central_point(
+                        tracked_xyxy=frame_element.tracked_xyxy[i],
+                        polygons=frame_element.people_roads_info,
+                    )
+                else:
+                    self.buffer_tracks[id].start_road = intersects_central_point(
+                        tracked_xyxy=frame_element.tracked_xyxy[i],
+                        polygons=frame_element.cars_roads_info,
+                    )
 
                 # Проверка того, что отработка функции дала актуальный номер дороги:
                 if self.buffer_tracks[id].start_road is not None:
@@ -59,14 +65,20 @@ class TrackerInfoUpdateNode:
 
             else:
                 if self.buffer_tracks[id].end_road is None:
-                    curr_road = intersects_central_point(
-                        tracked_xyxy=frame_element.tracked_xyxy[i],
-                        polygons=frame_element.roads_info,
-                    )
+                    if self.buffer_tracks[id].cls == "person":
+                        curr_road = intersects_central_point(
+                            tracked_xyxy=frame_element.tracked_xyxy[i],
+                            polygons=frame_element.people_roads_info,
+                        )
+                    else:
+                        curr_road = intersects_central_point(
+                            tracked_xyxy=frame_element.tracked_xyxy[i],
+                            polygons=frame_element.cars_roads_info,
+                        )
                     if curr_road is not None and curr_road != self.buffer_tracks[id].start_road:
                         self.buffer_tracks[id].end_road = curr_road
 
-        # Удаление старых айдишников из словаря если их время жизни > size_buffer_analytics
+        # Удаление старых id из словаря если их время жизни > size_buffer_analytics
         keys_to_remove = []
         for key, track_element in sorted(self.buffer_tracks.items()):  # Сортируем элементы по ключу
             if frame_element.timestamp - track_element.timestamp_first < self.size_buffer_analytics:

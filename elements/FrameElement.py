@@ -13,7 +13,8 @@ class FrameElement:
             frame: np.ndarray,
             timestamp: float,
             frame_num: float,
-            roads_info: dict,
+            cars_roads_info: dict,
+            people_roads_info: dict,
             frame_result: np.ndarray | None = None,
             detected_conf: list | None = None,
             detected_cls: list | None = None,
@@ -28,7 +29,8 @@ class FrameElement:
         self.frame: np.ndarray = frame  # Кадр bgr формата
         self.timestamp: float = timestamp  # Значение времени с начала потока (в секундах)
         self.frame_num: float = frame_num  # Нормер кадра с потока
-        self.roads_info: dict = roads_info  # Словарь с координатми дорог, примыкающих к участку кругового движения
+        self.cars_roads_info: dict = cars_roads_info  # Словарь с координатами дорог для машин
+        self.people_roads_info: dict = people_roads_info  # Словарь с координатами дорог для пешеходов
         self.frame_result: np.ndarray | None = frame_result  # Итоговый обработанный кадр
         self.timestamp_date: float = time.time()  # Время в момент обработки кадра unix формат (в секундах)
 
@@ -40,7 +42,7 @@ class FrameElement:
         # Результаты корректировки трекинг алгоритмом:
         self.tracked_conf: list | None = tracked_conf  # Список уверенностей задетектированных объектов
         self.tracked_cls: list | None = tracked_cls  # Список классов задетектированных объектов
-        self.tracked_xyxy: list[list] | None  = tracked_xyxy  # Список списков с координатами xyxy боксов
+        self.tracked_xyxy: list[list] | None = tracked_xyxy  # Список списков с координатами xyxy боксов
         self.id_list: list | None = id_list  # Список обнаруженных id трекуемых объектов
 
         # Постобработка кадра:

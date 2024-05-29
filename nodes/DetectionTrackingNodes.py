@@ -84,15 +84,9 @@ class DetectionTrackingNodes:
         for result in results[0]:
             class_id = result.boxes.cls.cpu().numpy().astype(int)
             # трекаем те же классы, что и детектируем
-            if class_id[0] in self.classes_to_detect:
+            if  class_id[0] in self.classes_to_detect:
                 bbox = result.boxes.xyxy.cpu().numpy()
                 confidence = result.boxes.conf.cpu().numpy()
-
-                class_id_value = (
-                    2  # Будем все трекуемые объекты считать классом car чтобы не было ошибок
-                )
-
-                # TODO: изменить код так, чтобы программа трекала различные классы
 
                 merged_detection = [
                     bbox[0][0],
@@ -100,7 +94,7 @@ class DetectionTrackingNodes:
                     bbox[0][2],
                     bbox[0][3],
                     confidence[0],
-                    class_id_value,
+                    class_id[0],
                 ]
 
                 detections_list.append(merged_detection)

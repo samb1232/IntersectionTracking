@@ -1,8 +1,9 @@
-import os
 import json
-import time
 import logging
+import os
+import time
 from typing import Generator
+
 import cv2
 
 from elements.FrameElement import FrameElement
@@ -34,13 +35,21 @@ class VideoReader:
             self.stream.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
             self.stream.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-        # Чтение данных из файла JSON (информация о координатах въезда и выезда дорог)
-        with open(config["roads_info"], "r") as file:
-            data_json = json.load(file)
+        # Чтение данных из файла JSON (информация о координатах въезда и выезда дорог для машин)
+        with open(config["cars_roads_info"], "r") as file:
+            cars_data_json = json.load(file)
+
+        with open(config["people_roads_info"], "r") as file:
+            people_data_json = json.load(file)
 
         # Преобразование данных координат дорог в формат int
-        self.roads_info = {
-            key: [int(value) for value in values] for key, values in data_json.items()
+        self.cars_roads_info = {
+            key: [int(value) for value in values] for key, values in cars_data_json.items()
+        }
+
+        # Преобразование данных координат дорог в формат int
+        self.people_roads_info = {
+            key: [int(value) for value in values] for key, values in people_data_json.items()
         }
 
     def process(self) -> Generator[FrameElement, None, None]:
@@ -82,4 +91,5 @@ class VideoReader:
 
             frame_number += 1
 
-            yield FrameElement(self.video_source, frame, timestamp, frame_number, self.roads_info)
+            yield FrameElement(self.video_source, frame, timestamp, frame_number, self.cars_roads_info,
+                               self.people_roads_info)
