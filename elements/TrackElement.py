@@ -8,7 +8,7 @@ class TrackElement:
         id: int,
         timestamp_first: float,
         start_road: int | None = None,
-        cls: int | None = None
+        cls: str | None = None
     ) -> None:
         self.id: int = id  # Номер этого трека
         self.timestamp_first: float = timestamp_first  # Таймстемп инициализации (в сек)
@@ -17,7 +17,7 @@ class TrackElement:
         self.end_road: int | None = None  # Номер дороги, на которую уехал
         self.timestamp_init_road: float = timestamp_first  # Таймстемп инициализации номера дороги (в сек)
         # ps: если дорога не будет определена, то значение останется равным первому появлению
-        self.cls = cls
+        self.cls: str | None = cls
         self.cls_conf = 0
 
     def update(self, timestamp, tracked_cls):
@@ -27,8 +27,8 @@ class TrackElement:
             self.cls_conf += 1
         else:
             self.cls_conf -= 1
+            if self.cls_conf <= 0:
+                self.cls = tracked_cls
+                self.cls_conf = 1
 
-        if self.cls_conf <= 0:
-            self.cls = tracked_cls
-            self.cls_conf = 1
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import time
 from collections import deque
@@ -52,7 +54,7 @@ class FPSCounter:
             return 0.0
 
 
-def intersects_central_point(tracked_xyxy, polygons):
+def intersects_central_point(tracked_xyxy, polygons) -> int | None:
     """Функция определяет присутcвие центральной точки bbox в области полигонов дорог
 
     Args:

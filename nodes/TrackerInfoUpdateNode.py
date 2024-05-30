@@ -14,12 +14,8 @@ class TrackerInfoUpdateNode:
     def __init__(self, config: dict) -> None:
         config_general = config["general"]
 
-        self.size_buffer_analytics = (
-                config_general["buffer_analytics"] * 60
-        )  # число секунд в буфере аналитики
-        # добавим мин времени жизни чтобы при расчете статистики были именно
-        # машины за последие buffer_analytics минут:
-        self.size_buffer_analytics += config_general["min_time_life_track"]
+        self.size_buffer_analytics = config_general["buffer_analytics"] * 60 # число секунд в буфере аналитики
+
         self.buffer_tracks = {}  # Буфер актуальных треков
 
     @profile_time
@@ -42,11 +38,13 @@ class TrackerInfoUpdateNode:
                     timestamp_first=frame_element.timestamp,
                 )
             else:
-                # Обновление времени последнего обнаружения
+                # Обновление времени последнего обнаружения и класса
                 self.buffer_tracks[id].update(frame_element.timestamp, frame_element.tracked_cls[i])
 
             # Поиск первого пересечения с полигонами дорог
             if self.buffer_tracks[id].start_road is None:
+                if self.buffer_tracks[id].cls is None:
+                    continue
                 if self.buffer_tracks[id].cls == "person":
                     self.buffer_tracks[id].start_road = intersects_central_point(
                         tracked_xyxy=frame_element.tracked_xyxy[i],

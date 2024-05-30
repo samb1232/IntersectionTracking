@@ -28,19 +28,18 @@ general:
     2: [171, 112, 255]
     3: [139, 222, 157]
   buffer_analytics: 5  # Количество минут жизни объектов в трекере (скользящее окно расчета)
-  min_time_life_track: 2 # Минимальное количество секунд жизни трека, чтобы учитывать его в статистике
 
 # ------------------------------------------------- NODES --------------------------------------------------
 
 video_reader:
-  src: test_videos/vid1.mp4  # путь до файла обработки или номер камеры
+  src: test_videos/vid1_clipped.mp4  # путь до файла обработки или номер камеры
   skip_secs : 0  # считываем кадры раз в <skip_secs> секунд
   cars_roads_info: configs/cars_roads_info.json  # json файл с координатами дорог на видео
   people_roads_info: configs/people_roads_info.json  # json файл с координатами дорог на видео
 
 
 detection_node:
-  weight_pth: weights/yolov8m.pt
+  weight_pth: weights/yolov8l.pt
   classes_to_detect: [0,2,3,5,7]  # люди и весь транспорт из классов COCO
   confidence: 0.10  # Порог уверенности детектора (чем больше значение, тем меньше находит)
   iou: 0.7  # Порог NMS (чем больше значение, тем больше находит)

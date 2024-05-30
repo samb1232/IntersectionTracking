@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="fixed problem with tracking buffer and changed roads">
-      <change afterPath="$PROJECT_DIR$/configs/people_roads_info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/app_config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/app_config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/entry_exit_lanes.json" beforeDir="false" afterPath="$PROJECT_DIR$/configs/cars_roads_info.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elements/FrameElement.py" beforeDir="false" afterPath="$PROJECT_DIR$/elements/FrameElement.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodes/ShowNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/ShowNode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodes/TrackerInfoUpdateNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/TrackerInfoUpdateNode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodes/VideoReader.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/VideoReader.py" afterDir="false" />
+    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="deleted weights">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +306,31 @@
       <option name="project" value="LOCAL" />
       <updated>1716715865774</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added people tracking and different types of transport tracking">
+      <option name="closed" value="true" />
+      <created>1717024329720</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1717024329720</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed problem with keyError + added weights">
+      <option name="closed" value="true" />
+      <created>1717102411719</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1717102411719</updated>
+    </task>
+    <task id="LOCAL-00012" summary="deleted weights">
+      <option name="closed" value="true" />
+      <created>1717102786190</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1717102786190</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -327,6 +343,20 @@
     <MESSAGE value="added types to Elements" />
     <MESSAGE value="added postgresql db insertions" />
     <MESSAGE value="fixed problem with tracking buffer and changed roads" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed problem with tracking buffer and changed roads" />
+    <MESSAGE value="added people tracking and different types of transport tracking" />
+    <MESSAGE value="fixed problem with keyError + added weights" />
+    <MESSAGE value="deleted weights" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted weights" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

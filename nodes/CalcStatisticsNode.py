@@ -14,9 +14,6 @@ class CalcStatisticsNode:
         self.time_buffer_analytics = config_general[
             "buffer_analytics"
         ]  # размер времени буфера в минутах
-        self.min_time_life_track = config_general[
-            "min_time_life_track"
-        ]  # минимальное время жизни трека в сек
 
         self.road_directions_data: dict = {}
 
@@ -51,18 +48,10 @@ class CalcStatisticsNode:
 
         info_dictionary = {"cars_on_screen": len(frame_element.id_list)}
 
-        # Посчитаем число машин которые давно живут и имеют значения дороги приезда
+        # Посчитаем число машин которые имеют значения дороги приезда и уезда
         for _, track_element in buffer_tracks.items():
-            if (track_element.timestamp_last - track_element.timestamp_init_road > self.min_time_life_track
-                    and track_element.start_road is not None and track_element.end_road is not None):
+            if track_element.start_road is not None and track_element.end_road is not None:
                 if track_element.cls == "person":
-                    if track_element.start_road == 4:
-                        track_element.start_road = None
-                        continue
-                    if track_element.end_road == 4:
-                        track_element.end_road = None
-                        continue
-                        # TODO: КОСТЫЛЬ ВОНЮЧИЙ
                     self.people_directions_data[track_element.start_road][track_element.end_road].add(track_element.id)
                 else:
                     self.road_directions_data[track_element.start_road][track_element.end_road][track_element.cls].add(

@@ -18,7 +18,7 @@ class ShowNode:
         self.colors_roads_people = {key: tuple(value) for key, value in data_colors_people.items()}
 
         self.buffer_analytics_sec = (
-                config["general"]["buffer_analytics"] * 60 + config["general"]["min_time_life_track"]
+                config["general"]["buffer_analytics"] * 60
         )  # столько по времени буфер набирается и информацию о статистеке выводить рано
 
         config_show_node = config["show_node"]
@@ -97,20 +97,21 @@ class ShowNode:
                                 color = self.colors_roads_cars[int(start_road)]
                         else:  # бокс черным цветом если еще нет информации о стартовой дороге
                             color = (0, 0, 0)
-                    except KeyError:  # На случай если машина еще в кадре, а трек уже удален
+                    except KeyError as e:  # На случай если машина еще в кадре, а трек уже удален
                         color = (255, 255, 255)
 
-                cv2.rectangle(frame_result, (x1, y1), (x2, y2), color, self.thickness_lines)
-                # Добавление подписи с именем класса
-                cv2.putText(
-                    frame_result,
-                    f"{frame_element.buffer_tracks[int(id)].cls}: {id}",
-                    (x1, y1 - 10),
-                    fontFace=self.fontFace,
-                    fontScale=self.fontScale,
-                    thickness=self.thickness,
-                    color=(0, 0, 255),
-                )
+                if int(id) in frame_element.buffer_tracks:
+                    cv2.rectangle(frame_result, (x1, y1), (x2, y2), color, self.thickness_lines)
+                    # Добавление подписи с именем класса
+                    cv2.putText(
+                        frame_result,
+                        f"{frame_element.buffer_tracks[int(id)].cls}: {id}",
+                        (x1, y1 - 10),
+                        fontFace=self.fontFace,
+                        fontScale=self.fontScale,
+                        thickness=self.thickness,
+                        color=(0, 0, 255),
+                    )
 
         # Построение полигонов дорог для машин
         if self.show_roi_cars:

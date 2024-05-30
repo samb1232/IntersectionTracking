@@ -42,6 +42,7 @@ def proc_tracker_update_and_calc(queue_in: Queue, queue_out: Queue, config: dict
     tracker_info_update_node = TrackerInfoUpdateNode(config)
     calc_statistics_node = CalcStatisticsNode(config)
     send_info_db = config["pipeline"]["send_info_db"]
+    send_info_db_node = None
     if send_info_db:
         send_info_db_node = SendInfoDBNode(config)
     while True:

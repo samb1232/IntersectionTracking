@@ -30,8 +30,7 @@ class SendInfoDBNode:
         }
 
         self.buffer_analytics_sec = (
-            config["general"]["buffer_analytics"] * 60 +
-            config["general"]["min_time_life_track"]
+            config["general"]["buffer_analytics"] * 60
         )  # столько по времени буфер набирается и информацию о статистике выводить рано
 
         # Подключение к базе данных
