@@ -84,7 +84,7 @@ class DetectionTrackingNodes:
         for result in results[0]:
             class_id = result.boxes.cls.cpu().numpy().astype(int)
             # трекаем те же классы, что и детектируем
-            if  class_id[0] in self.classes_to_detect:
+            if class_id[0] in self.classes_to_detect:
                 bbox = result.boxes.xyxy.cpu().numpy()
                 confidence = result.boxes.conf.cpu().numpy()
 

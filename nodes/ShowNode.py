@@ -38,7 +38,7 @@ class ShowNode:
 
         # Параметры для шрифтов:
         self.fontFace = 1
-        self.fontScale = 2.0
+        self.fontScale = 1.5
         self.thickness = 2
 
         # Параметры для полигонов и bboxes:
@@ -248,7 +248,7 @@ class ShowNode:
             data_info = frame_element.info
 
             # Текст для количества машин
-            text_cars = f"Cars amount: {data_info['cars_amount']}"
+            text_cars = f"Cars on screen: {data_info['cars_on_screen']}"
             # Начальная координата для текста
             y = 55
             # Выводим текст для количества машин

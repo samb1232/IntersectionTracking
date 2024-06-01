@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="deleted weights">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="fixed problem with KEYERROR">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/app_config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/app_config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodes/CalcStatisticsNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/CalcStatisticsNode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodes/SendInfoDBNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/SendInfoDBNode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nodes/ShowNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/ShowNode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils_local/dashboard_configuration.json" beforeDir="false" afterPath="$PROJECT_DIR$/utils_local/dashboard_configuration.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,22 +54,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.alg_test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main_optimized.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.track_all (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.track_cars.executor&quot;: &quot;Run&quot;,
-    &quot;Python.yolo_track.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/DATA/Projects/PyCharmProjects/IntersectionTracking/configs/hydra&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.alg_test.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main_optimized.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.track_all (1).executor": "Run",
+    "Python.track_cars.executor": "Run",
+    "Python.trest.executor": "Run",
+    "Python.yolo_track.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/DATA/Projects/PyCharmProjects/IntersectionTracking/configs/hydra",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\configs\hydra" />
@@ -142,28 +149,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IntersectionTracking" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="track_all" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="IntersectionTracking" />
       <option name="ENV_FILES" value="" />
@@ -178,6 +163,28 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\track_all.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="trest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="IntersectionTracking" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/trest.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -212,9 +219,9 @@
       <list>
         <item itemvalue="Python.main_optimized" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.trest" />
         <item itemvalue="Python.yolo_track" />
         <item itemvalue="Python.alg_test" />
-        <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -330,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717102786190</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fixed problem with KEYERROR">
+      <option name="closed" value="true" />
+      <created>1717103322632</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1717103322633</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -346,17 +361,7 @@
     <MESSAGE value="added people tracking and different types of transport tracking" />
     <MESSAGE value="fixed problem with keyError + added weights" />
     <MESSAGE value="deleted weights" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted weights" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>13</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="fixed problem with KEYERROR" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed problem with KEYERROR" />
   </component>
 </project>

@@ -32,7 +32,7 @@ general:
 # ------------------------------------------------- NODES --------------------------------------------------
 
 video_reader:
-  src: test_videos/vid1_clipped.mp4  # путь до файла обработки или номер камеры
+  src: test_videos/vid1.mp4  # путь до файла обработки или номер камеры
   skip_secs : 0  # считываем кадры раз в <skip_secs> секунд
   cars_roads_info: configs/cars_roads_info.json  # json файл с координатами дорог на видео
   people_roads_info: configs/people_roads_info.json  # json файл с координатами дорог на видео
@@ -55,7 +55,7 @@ tracking_node:
 
 
 show_node:
-  scale : 0.7  # Масштабирование итогового окна результатов при imshow=True
+  scale : 0.8  # Масштабирование итогового окна результатов при imshow=True
   imshow: True  # Нужно ли выводить видео в процессе обработки
   fps_counter_N_frames_stat : 15  # Окно усредения fps счетчика
   draw_fps_info : True  # Указывать ли fps обработки
@@ -64,7 +64,7 @@ show_node:
   overlay_transparent_mask: False # Заливка регионов при show_roi=True (медленная операция)
   show_only_yolo_detections : False  # Отображать лишь результаты детекции без учета трекинга и прочей логики кода
   show_track_id_different_colors: False  # Отображать цвет бокса согласно id трека, а не логике прибытия объекта
-  show_info_statistics: False  # Вывод информации о статистике в отдельном окне справа от кадра
+  show_info_statistics: True  # Вывод информации о статистике в отдельном окне справа от кадра
 
 
 video_saver_node:
@@ -73,7 +73,7 @@ video_saver_node:
 
 
 send_info_db_node:
-  update_period: 1  # как часто обновлять информацию в базе (раз в столько минут)
+  update_period: 0.2  # как часто обновлять информацию в базе (раз в столько минут)
   table_name: traffic_info  # имя таблицы в БД в которую ведем запись
   connection_info:  # данные о подключении (должны совпадать со значениями из docker-compose файла)
     user: user

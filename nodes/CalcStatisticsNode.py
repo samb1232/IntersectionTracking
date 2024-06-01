@@ -46,10 +46,15 @@ class CalcStatisticsNode:
 
         buffer_tracks = frame_element.buffer_tracks
 
-        info_dictionary = {"cars_on_screen": len(frame_element.id_list)}
+        cars_on_screen = 0
 
-        # Посчитаем число машин которые имеют значения дороги приезда и уезда
         for _, track_element in buffer_tracks.items():
+            # Считаем общее количество машин на экране
+            if track_element.cls is not None and track_element.cls != "person":
+                if track_element.timestamp_last == frame_element.timestamp:
+                    cars_on_screen += 1
+
+            # Посчитаем число машин которые имеют значения дороги приезда и уезда
             if track_element.start_road is not None and track_element.end_road is not None:
                 if track_element.cls == "person":
                     self.people_directions_data[track_element.start_road][track_element.end_road].add(track_element.id)
@@ -76,11 +81,13 @@ class CalcStatisticsNode:
                 road_statistic_people[i][j] = {}
                 road_statistic_people[i][j] = self.people_directions_data[i][j].get_len()
 
-        info_dictionary["vehicles_data"] = json.dumps(road_statistic_cars)
-        info_dictionary["people_data"] = json.dumps(road_statistic_people)
-
         # Запись результатов обработки:
-        frame_element.info = info_dictionary
+        frame_element.info = {
+            "cars_on_screen": cars_on_screen,
+            "vehicles_data": json.dumps(road_statistic_cars),
+            "people_data": json.dumps(road_statistic_people)
+        }
+
         return frame_element
 
     def clear_counters_data(self):

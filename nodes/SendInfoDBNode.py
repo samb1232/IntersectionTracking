@@ -15,7 +15,7 @@ class SendInfoDBNode:
 
     def __init__(self, config: dict) -> None:
         config_db = config["send_info_db_node"]
-        self.update_period = config_db["update_period"] * 6
+        self.update_period = config_db["update_period"] * 60
         self.table_name = config_db["table_name"]
         self.last_db_update = time.time()
 
