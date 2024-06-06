@@ -69,26 +69,3 @@ class DetectionTrackingNodes:
             frame_element.detected_xyxy = outputs[0].boxes.xyxy.cpu().int().tolist()
 
         return frame_element
-
-    def _get_results_for_tracker(self, results) -> np.ndarray:
-        # Приведение данных в правильную форму для трекера
-        detections_list = []
-        for result in results[0]:
-            class_id = result.boxes.cls.cpu().numpy().astype(int)
-            # трекаем те же классы, что и детектируем
-            if class_id[0] in self.classes_to_detect:
-                bbox = result.boxes.xyxy.cpu().numpy()
-                confidence = result.boxes.conf.cpu().numpy()
-
-                merged_detection = [
-                    bbox[0][0],
-                    bbox[0][1],
-                    bbox[0][2],
-                    bbox[0][3],
-                    confidence[0],
-                    class_id[0],
-                ]
-
-                detections_list.append(merged_detection)
-
-        return np.array(detections_list)
