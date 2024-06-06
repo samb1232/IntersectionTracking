@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="fixed problem with KEYERROR">
+    <list default="true" id="239abfd9-2288-49f7-8457-c6e799066af5" name="Changes" comment="small fixes with statistics">
+      <change afterPath="$PROJECT_DIR$/configs/botsort_conf.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/byteTrack_conf.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/app_config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/app_config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nodes/CalcStatisticsNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/CalcStatisticsNode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elements/TrackElement.py" beforeDir="false" afterPath="$PROJECT_DIR$/elements/TrackElement.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/DetectionTrackingNodes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nodes/SendInfoDBNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/SendInfoDBNode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nodes/ShowNode.py" beforeDir="false" afterPath="$PROJECT_DIR$/nodes/ShowNode.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils_local/dashboard_configuration.json" beforeDir="false" afterPath="$PROJECT_DIR$/utils_local/dashboard_configuration.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,22 +60,25 @@
     "Python.alg_test.executor": "Run",
     "Python.main.executor": "Run",
     "Python.main_optimized.executor": "Run",
+    "Python.plotting.executor": "Run",
     "Python.test.executor": "Run",
     "Python.track_all (1).executor": "Run",
     "Python.track_cars.executor": "Run",
     "Python.trest.executor": "Run",
+    "Python.utils.executor": "Run",
     "Python.yolo_track.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/DATA/Projects/PyCharmProjects/IntersectionTracking/configs/hydra",
+    "last_opened_file_path": "C:/DATA/Projects/PyCharmProjects/IntersectionTracking/configs",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\configs\hydra" />
+      <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\configs" />
       <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking" />
+      <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\configs\hydra" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\DATA\Projects\PyCharmProjects\IntersectionTracking\configs" />
@@ -83,28 +87,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main_optimized">
-    <configuration name="alg_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IntersectionTracking" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/alg_test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="IntersectionTracking" />
       <option name="ENV_FILES" value="" />
@@ -149,6 +131,50 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="plotting" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="IntersectionTracking" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tracker/trackeval" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tracker/trackeval/plotting.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="IntersectionTracking" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="track_all" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="IntersectionTracking" />
       <option name="ENV_FILES" value="" />
@@ -171,7 +197,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="trest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="utils" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="IntersectionTracking" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -180,33 +206,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tracker/trackeval" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/trest.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="yolo_track" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="IntersectionTracking" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/yolo_track.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tracker/trackeval/utils.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -219,9 +223,9 @@
       <list>
         <item itemvalue="Python.main_optimized" />
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.trest" />
-        <item itemvalue="Python.yolo_track" />
-        <item itemvalue="Python.alg_test" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.utils" />
+        <item itemvalue="Python.plotting" />
       </list>
     </recent_temporary>
   </component>
@@ -345,7 +349,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717103322633</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="small fixes with statistics">
+      <option name="closed" value="true" />
+      <created>1717248572180</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1717248572180</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -362,6 +374,7 @@
     <MESSAGE value="fixed problem with keyError + added weights" />
     <MESSAGE value="deleted weights" />
     <MESSAGE value="fixed problem with KEYERROR" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed problem with KEYERROR" />
+    <MESSAGE value="small fixes with statistics" />
+    <option name="LAST_COMMIT_MESSAGE" value="small fixes with statistics" />
   </component>
 </project>

@@ -2,7 +2,6 @@ import numpy as np
 import torch
 from ultralytics import YOLO
 
-from byte_tracker.byte_tracker_model import BYTETracker as ByteTracker
 from elements.FrameElement import FrameElement
 from elements.VideoEndBreakElement import VideoEndBreakElement
 from utils_local.utils import profile_time
@@ -24,17 +23,9 @@ class DetectionTrackingNodes:
         self.imgsz = config_yolo["imgsz"]
         self.classes_to_detect = config_yolo["classes_to_detect"]
 
-        config_bytetrack = config["tracking_node"]
-
-        # ByteTrack param
-        first_track_thresh = config_bytetrack["first_track_thresh"]
-        second_track_thresh = config_bytetrack["second_track_thresh"]
-        match_thresh = config_bytetrack["match_thresh"]
-        track_buffer = config_bytetrack["track_buffer"]
-        fps = 30  # ставим равным 30 чтобы track_buffer мерился в кадрах
-        self.tracker = ByteTracker(
-            fps, first_track_thresh, second_track_thresh, match_thresh, track_buffer, 1
-        )
+        config_general = config["general"]
+        self.tracker_conf_path = config_general["tracker_conf_path"]
+        self.show_only_yolo_detections = config["show_node"]["show_only_yolo_detections"]
 
     @profile_time
     def process(self, frame_element: FrameElement) -> FrameElement:
@@ -47,34 +38,35 @@ class DetectionTrackingNodes:
 
         frame = frame_element.frame.copy()
 
-        outputs = self.model.predict(frame, imgsz=self.imgsz, conf=self.conf, verbose=False,
-                                     iou=self.iou, classes=self.classes_to_detect)
-
-        frame_element.detected_conf = outputs[0].boxes.conf.cpu().tolist()
-        detected_cls = outputs[0].boxes.cls.cpu().int().tolist()
-        frame_element.detected_cls = [self.classes[i] for i in detected_cls]
-        frame_element.detected_xyxy = outputs[0].boxes.xyxy.cpu().int().tolist()
-
-        # Преподготовка данных на подачу в трекер
-        detections_list = self._get_results_for_tracker(outputs)
-
-        # Если детекций нет, то оправляем пустой массив
-        if len(detections_list) == 0:
-            detections_list = np.empty((0, 6))
-
-        track_list = self.tracker.update(torch.tensor(detections_list), xyxy=True)
+        track_list = self.model.track(frame, persist=True, tracker=self.tracker_conf_path)[0].boxes.data.cpu().numpy()
+        classes_list = []
+        confs_list = []
+        boxes_ids = []
+        boxes_coordinates = []
+        for box in track_list:
+            if box[6] in self.classes_to_detect:
+                classes_list.append(self.classes[box[6].astype(int)])
+                confs_list.append(box[5])
+                boxes_ids.append(box[4].astype(int))
+                boxes_coordinates.append([i.astype(int) for i in box[0:4]])
 
         # Получение id list
-        frame_element.id_list = [int(t.track_id) for t in track_list]
-
+        frame_element.id_list = boxes_ids
         # Получение box list
-        frame_element.tracked_xyxy = [list(t.tlbr.astype(int)) for t in track_list]
-
+        frame_element.tracked_xyxy = boxes_coordinates
         # Получение object class names
-        frame_element.tracked_cls = [self.classes[int(t.class_name)] for t in track_list]
-
+        frame_element.tracked_cls = classes_list
         # Получение conf scores
-        frame_element.tracked_conf = [t.score for t in track_list]
+        frame_element.tracked_conf = confs_list
+
+        if self.show_only_yolo_detections:
+            outputs = self.model.predict(frame, imgsz=self.imgsz, conf=self.conf, verbose=False,
+                                         iou=self.iou, classes=self.classes_to_detect)
+
+            frame_element.detected_conf = outputs[0].boxes.conf.cpu().tolist()
+            detected_cls = outputs[0].boxes.cls.cpu().int().tolist()
+            frame_element.detected_cls = [self.classes[i] for i in detected_cls]
+            frame_element.detected_xyxy = outputs[0].boxes.xyxy.cpu().int().tolist()
 
         return frame_element
 

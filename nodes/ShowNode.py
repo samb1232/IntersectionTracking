@@ -9,7 +9,7 @@ from utils_local.utils import profile_time, FPSCounter
 
 
 class ShowNode:
-    """Модуль отвечающий, за визуализацию результатов"""
+    """Модуль для визуализации результатов"""
 
     def __init__(self, config) -> None:
         data_colors_cars = config["general"]["colors_of_roads_cars"]

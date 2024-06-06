@@ -1,6 +1,6 @@
-import json
-import time
 import logging
+import time
+
 import psycopg2
 
 from elements.FrameElement import FrameElement

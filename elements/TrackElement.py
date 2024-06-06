@@ -2,7 +2,7 @@ from __future__ import annotations
 
 
 class TrackElement:
-    # Класс, содержаций информацию о конкретном треке
+    # Класс, содержащий информацию о конкретном треке
     def __init__(
         self,
         id: int,

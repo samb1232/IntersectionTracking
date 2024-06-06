@@ -28,11 +28,12 @@ general:
     2: [171, 112, 255]
     3: [139, 222, 157]
   buffer_analytics: 5  # Количество минут жизни объектов в трекере (скользящее окно расчета)
+  tracker_conf_path: configs/byteTrack_conf.yaml
 
 # ------------------------------------------------- NODES --------------------------------------------------
 
 video_reader:
-  src: test_videos/vid1.mp4  # путь до файла обработки или номер камеры
+  src: test_videos/vid1_clipped_long.mp4  # путь до файла обработки или номер камеры
   skip_secs : 0  # считываем кадры раз в <skip_secs> секунд
   cars_roads_info: configs/cars_roads_info.json  # json файл с координатами дорог на видео
   people_roads_info: configs/people_roads_info.json  # json файл с координатами дорог на видео
@@ -46,17 +47,9 @@ detection_node:
   imgsz: 640  # Ресайз при инференсе (640 по умолчанию)
 
 
-tracking_node:  
-  # Использован ByteTrack (https://github.com/ifzhang/ByteTrack)
-  first_track_thresh: 0.5  # Пороговое значение для первичной инициализации трека
-  second_track_thresh: 0.10  # Пороговое значение для поддержания трека
-  match_thresh: 0.85  # Чем больше значение, тем больше может быть расстояние между соседними обнаруженими чтобы держать трек
-  track_buffer: 200  # Время жизни трека после исчезновения из поля зрения (измеряется в числе кадров)
-
-
 show_node:
-  scale : 0.8  # Масштабирование итогового окна результатов при imshow=True
-  imshow: True  # Нужно ли выводить видео в процессе обработки
+  scale : 0.7  # Масштабирование итогового окна результатов при imshow=True
+  imshow: False  # Нужно ли выводить видео в процессе обработки
   fps_counter_N_frames_stat : 15  # Окно усредения fps счетчика
   draw_fps_info : True  # Указывать ли fps обработки
   show_roi_cars: True  # Показывать ли регионы примыкающих дорог
@@ -64,16 +57,16 @@ show_node:
   overlay_transparent_mask: False # Заливка регионов при show_roi=True (медленная операция)
   show_only_yolo_detections : False  # Отображать лишь результаты детекции без учета трекинга и прочей логики кода
   show_track_id_different_colors: False  # Отображать цвет бокса согласно id трека, а не логике прибытия объекта
-  show_info_statistics: True  # Вывод информации о статистике в отдельном окне справа от кадра
+  show_info_statistics: False  # Вывод информации о статистике в отдельном окне справа от кадра
 
 
 video_saver_node:
-  fps : 24  # при увеличении позволяет ускорить итоговое видео
+  fps : 30  # при увеличении позволяет ускорить итоговое видео
   out_folder : test_videos/videos_out  # в какую папку сохранить результат
 
 
 send_info_db_node:
-  update_period: 0.2  # как часто обновлять информацию в базе (раз в столько минут)
+  update_period: 0.5  # как часто обновлять информацию в базе (раз в столько минут)
   table_name: traffic_info  # имя таблицы в БД в которую ведем запись
   connection_info:  # данные о подключении (должны совпадать со значениями из docker-compose файла)
     user: user
