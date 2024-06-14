@@ -27,7 +27,7 @@ class ShowNode:
         self.default_fps_counter = FPSCounter(self.fps_counter_N_frames_stat)
         self.draw_fps_info = config_show_node["draw_fps_info"]
         self.show_roi_cars = config_show_node["show_roi_cars"]
-        self.show_roi_people = config_show_node["show_roi_cars"]
+        self.show_roi_people = config_show_node["show_roi_people"]
         self.overlay_transparent_mask = config_show_node["overlay_transparent_mask"]
         self.imshow = config_show_node["imshow"]
         self.show_only_yolo_detections = config_show_node["show_only_yolo_detections"]

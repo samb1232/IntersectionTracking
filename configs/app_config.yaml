@@ -33,7 +33,7 @@ general:
 # ------------------------------------------------- NODES --------------------------------------------------
 
 video_reader:
-  src: test_videos/vid1_clipped_long.mp4  # путь до файла обработки или номер камеры
+  src: test_videos/vid1.mp4  # путь до файла обработки или номер камеры
   skip_secs : 0  # считываем кадры раз в <skip_secs> секунд
   cars_roads_info: configs/cars_roads_info.json  # json файл с координатами дорог на видео
   people_roads_info: configs/people_roads_info.json  # json файл с координатами дорог на видео
